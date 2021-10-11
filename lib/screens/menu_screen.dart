@@ -4,9 +4,9 @@ import 'package:flutter/painting.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:my_love/screens/date_picker_screen.dart';
 import 'package:my_love/screens/note_screen.dart';
+import 'package:my_love/widgets/custom_app_bar.dart';
 
 import 'notification_screen.dart';
 
@@ -29,42 +29,8 @@ class MenuScreen extends StatelessWidget {
             SizedBox(
               height: 44.h,
             ),
-            Container(
-              width: 375.w,
-              height: 56.h,
-              padding: EdgeInsets.symmetric(
-                horizontal: 24.w,
-                vertical: 16.h,
-              ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  SizedBox(
-                    width: 24.w,
-                    height: 24.h,
-                    child: SvgPicture.asset(
-                      "assets/icons/arrow.svg",
-                    ),
-                  ),
-                  SizedBox(
-                    width: 215.w,
-                    height: 24.h,
-                    child: Center(
-                      child: Text(
-                        "Menu",
-                        style: TextStyle(
-                          fontSize: 26.sp,
-                          fontWeight: FontWeight.w700,
-                        ),
-                      ),
-                    ),
-                  ),
-                  SizedBox(
-                    width: 24.w,
-                    height: 24.h,
-                  )
-                ],
-              ),
+            const CustomAppBar(
+              text: "Menu",
             ),
             Expanded(
               child: SingleChildScrollView(

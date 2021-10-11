@@ -2,13 +2,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:my_love/models/note.dart';
 import 'package:my_love/widgets/custom_app_bar.dart';
 import 'package:my_love/widgets/eight_height_divider.dart';
 import 'package:my_love/widgets/ok_button.dart';
-
-import 'note_screen.dart';
 
 class NewNoteScreen extends StatefulWidget {
   const NewNoteScreen({Key? key, this.note}) : super(key: key);
@@ -38,6 +35,8 @@ class _NewNoteScreenState extends State<NewNoteScreen> {
     textEditingController1.addListener(() {
       if (textEditingController1.text.isNotEmpty) {
         isNotEmptyText1 = true;
+      } else {
+        isNotEmptyText1 = false;
       }
       if (isNotEmptyText1 && isNotEmptyText2 && isNotEmptyText3) {
         setState(() {});
@@ -46,6 +45,8 @@ class _NewNoteScreenState extends State<NewNoteScreen> {
     textEditingController2.addListener(() {
       if (textEditingController2.text.isNotEmpty) {
         isNotEmptyText2 = true;
+      } else{
+        isNotEmptyText2 = false;
       }
       if (isNotEmptyText1 && isNotEmptyText2 && isNotEmptyText3) {
         setState(() {});
@@ -54,6 +55,8 @@ class _NewNoteScreenState extends State<NewNoteScreen> {
     textEditingController3.addListener(() {
       if (textEditingController3.text.isNotEmpty) {
         isNotEmptyText3 = true;
+      } else{
+        isNotEmptyText3 = false;
       }
       if (isNotEmptyText1 && isNotEmptyText2 && isNotEmptyText3) {
         setState(() {});
@@ -139,15 +142,16 @@ class _NewNoteScreenState extends State<NewNoteScreen> {
                 ),
               ],
             ),
-            Positioned(
-              top: 666.h,
-              left: 152.5.w,
-              child: OkButton(
-                onTap: () {
-                  Navigator.pop(context);
-                },
+            if (isNotEmptyText1 && isNotEmptyText2 && isNotEmptyText3)
+              Positioned(
+                top: 666.h,
+                left: 152.5.w,
+                child: OkButton(
+                  onTap: () {
+                    Navigator.pop(context);
+                  },
+                ),
               ),
-            ),
           ],
         ),
       ),
@@ -187,6 +191,12 @@ class _TextBlockState extends State<_TextBlock> {
       if (!focusNode.hasFocus && textLength == 0) {
         editing = false;
         setState(() {});
+      }
+      if(focusNode.hasFocus){
+        editing = true;
+        setState(() {
+
+        });
       }
     });
     super.initState();

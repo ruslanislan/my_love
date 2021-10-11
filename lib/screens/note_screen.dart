@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:my_love/models/note.dart';
 import 'package:my_love/screens/new_note_screen.dart';
 import 'package:my_love/widgets/custom_app_bar.dart';
 import 'package:my_love/widgets/eight_height_divider.dart';
@@ -97,11 +98,4 @@ class NoteScreen extends StatelessWidget {
       ),
     );
   }
-}
-
-class Note {
-  final String name;
-  final String title;
-
-  Note(this.name, this.title);
 }

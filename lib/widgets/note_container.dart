@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:my_love/models/note.dart';
 import 'package:my_love/screens/note_screen.dart';
 
 class NoteContainer extends StatelessWidget {

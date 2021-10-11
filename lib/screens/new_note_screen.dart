@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:my_love/models/note.dart';
 import 'package:my_love/widgets/custom_app_bar.dart';
 import 'package:my_love/widgets/eight_height_divider.dart';
 import 'package:my_love/widgets/ok_button.dart';

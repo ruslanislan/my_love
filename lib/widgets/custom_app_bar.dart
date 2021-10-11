@@ -36,7 +36,6 @@ class CustomAppBar extends StatelessWidget {
           ),
           SizedBox(
             width: 215.w,
-            height: 24.h,
             child: Center(
               child: Text(
                 text,

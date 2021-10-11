@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:my_love/screens/new_note_screen.dart';
+import 'package:my_love/widgets/custom_app_bar.dart';
 import 'package:my_love/widgets/eight_height_divider.dart';
 import 'package:my_love/widgets/header_text_6.dart';
 import 'package:my_love/widgets/note_container.dart';
@@ -42,60 +42,16 @@ class NoteScreen extends StatelessWidget {
             SizedBox(
               height: 44.h,
             ),
-            Container(
-              width: 375.w,
-              height: 56.h,
-              padding: EdgeInsets.symmetric(
-                horizontal: 24.w,
-                vertical: 16.h,
-              ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  GestureDetector(
-                    onTap: () {
-                      Navigator.pop(context);
-                    },
-                    child: SizedBox(
-                      width: 24.w,
-                      height: 24.h,
-                      child: SvgPicture.asset(
-                        "assets/icons/arrow.svg",
-                      ),
-                    ),
+            CustomAppBar(
+              text: "Notes",
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (_) => NewNoteScreen(),
                   ),
-                  SizedBox(
-                    width: 215.w,
-                    height: 24.h,
-                    child: Center(
-                      child: Text(
-                        "Notes",
-                        style: TextStyle(
-                          fontSize: 26.sp,
-                          fontWeight: FontWeight.w700,
-                        ),
-                      ),
-                    ),
-                  ),
-                  GestureDetector(
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (_) => NewNoteScreen(),
-                        ),
-                      );
-                    },
-                    child: SizedBox(
-                      width: 24.w,
-                      height: 24.h,
-                      child: SvgPicture.asset(
-                        'assets/icons/add.svg',
-                      ),
-                    ),
-                  )
-                ],
-              ),
+                );
+              },
             ),
             Expanded(
               child: notes.isEmpty

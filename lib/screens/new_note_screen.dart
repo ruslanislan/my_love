@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:my_love/widgets/custom_app_bar.dart';
 import 'package:my_love/widgets/eight_height_divider.dart';
 import 'package:my_love/widgets/ok_button.dart';
 
@@ -23,12 +24,41 @@ class _NewNoteScreenState extends State<NewNoteScreen> {
 
   final TextEditingController textEditingController3 = TextEditingController();
 
+  bool isNotEmptyText1 = false;
+  bool isNotEmptyText2 = false;
+  bool isNotEmptyText3 = false;
+
   @override
   void initState() {
     if (widget.note != null) {
       textEditingController1.text = widget.note!.name;
       textEditingController2.text = widget.note!.title;
     }
+    textEditingController1.addListener(() {
+      if (textEditingController1.text.isNotEmpty) {
+        isNotEmptyText1 = true;
+      }
+      if (isNotEmptyText1 && isNotEmptyText2 && isNotEmptyText3) {
+        setState(() {});
+      }
+    });
+    textEditingController2.addListener(() {
+      if (textEditingController2.text.isNotEmpty) {
+        isNotEmptyText2 = true;
+      }
+      if (isNotEmptyText1 && isNotEmptyText2 && isNotEmptyText3) {
+        setState(() {});
+      }
+    });
+    textEditingController3.addListener(() {
+      if (textEditingController3.text.isNotEmpty) {
+        isNotEmptyText3 = true;
+      }
+      if (isNotEmptyText1 && isNotEmptyText2 && isNotEmptyText3) {
+        setState(() {});
+      }
+    });
+
     super.initState();
   }
 
@@ -53,57 +83,8 @@ class _NewNoteScreenState extends State<NewNoteScreen> {
                 SizedBox(
                   height: 44.h,
                 ),
-                Container(
-                  width: 375.w,
-                  height: 56.h,
-                  padding: EdgeInsets.symmetric(
-                    horizontal: 24.w,
-                    vertical: 16.h,
-                  ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      GestureDetector(
-                        onTap: () {
-                          Navigator.pop(context);
-                        },
-                        child: SizedBox(
-                          width: 24.w,
-                          height: 24.h,
-                          child: SvgPicture.asset(
-                            "assets/icons/arrow.svg",
-                          ),
-                        ),
-                      ),
-                      SizedBox(
-                        width: 215.w,
-                        height: 24.h,
-                        child: Center(
-                          child: Text(
-                            widget.note == null ? "New note" : "Note",
-                            style: TextStyle(
-                              fontSize: 26.sp,
-                              fontWeight: FontWeight.w700,
-                            ),
-                          ),
-                        ),
-                      ),
-                      GestureDetector(
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (_) => NewNoteScreen(),
-                            ),
-                          );
-                        },
-                        child: SizedBox(
-                          width: 24.w,
-                          height: 24.h,
-                        ),
-                      ),
-                    ],
-                  ),
+                CustomAppBar(
+                  text: widget.note == null ? "New note" : "Note",
                 ),
                 Expanded(
                   child: SingleChildScrollView(
@@ -319,9 +300,9 @@ class _TextBlockState extends State<_TextBlock> {
                         TextPosition(offset: widget.textEditingController.text.length),
                       );
                     } else if (textLength > value.length && (value.length == 2 || value.length == 5)) {
-                      if(value.length== 2) {
+                      if (value.length == 2) {
                         widget.textEditingController.text = widget.textEditingController.text.substring(0, 1);
-                      } else{
+                      } else {
                         widget.textEditingController.text = widget.textEditingController.text.substring(0, 4);
                       }
                       widget.textEditingController.selection = TextSelection.fromPosition(

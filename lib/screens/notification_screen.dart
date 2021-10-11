@@ -3,7 +3,7 @@ import 'dart:ui';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_svg/svg.dart';
+import 'package:my_love/widgets/custom_app_bar.dart';
 import 'package:my_love/widgets/custom_button.dart';
 import 'package:my_love/widgets/eight_height_divider.dart';
 
@@ -52,39 +52,8 @@ class _NotificationScreenState extends State<NotificationScreen> {
             SizedBox(
               height: 44.h,
             ),
-            Container(
-              width: 375.w,
-              height: 56.h,
-              padding: EdgeInsets.symmetric(horizontal: 24.w, vertical: 16.h),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  GestureDetector(
-                    onTap: () {
-                      Navigator.pop(context);
-                    },
-                    child: SizedBox(
-                      width: 24.w,
-                      height: 24.h,
-                      child: SvgPicture.asset("assets/icons/arrow.svg"),
-                    ),
-                  ),
-                  SizedBox(
-                    width: 215.w,
-                    height: 24.h,
-                    child: Center(
-                      child: Text(
-                        "Notifications",
-                        style: TextStyle(fontSize: 26.sp, fontWeight: FontWeight.w700, height: 1),
-                      ),
-                    ),
-                  ),
-                  SizedBox(
-                    width: 24.w,
-                    height: 24.h,
-                  ),
-                ],
-              ),
+            const CustomAppBar(
+              text: "Notifications",
             ),
             Expanded(
               child: SingleChildScrollView(

@@ -15,10 +15,10 @@ class CustomAppBar extends StatelessWidget {
       height: 56.h,
       padding: EdgeInsets.symmetric(
         horizontal: 24.w,
-        vertical: 16.h,
       ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           GestureDetector(
             onTap: () {

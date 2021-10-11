@@ -7,7 +7,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:my_love/screens/date_picker_screen.dart';
 import 'package:my_love/screens/note_screen.dart';
-import 'package:my_love/screens/settings_screen.dart';
 
 import 'notification_screen.dart';
 
@@ -227,16 +226,8 @@ class MenuScreen extends StatelessWidget {
                     SizedBox(
                       height: 8.h,
                     ),
-                    _MenuItem2(
+                    const _MenuItem2(
                       text: "Settings",
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (_) => SettingsScreen(),
-                          ),
-                        );
-                      },
                     ),
                     SizedBox(
                       height: 42.h,

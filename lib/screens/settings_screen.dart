@@ -2,20 +2,13 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:my_love/screens/customize_screen.dart';
 import 'package:my_love/widgets/custom_app_bar.dart';
 import 'package:my_love/widgets/custom_button.dart';
 import 'package:my_love/widgets/eight_height_divider.dart';
 
 class SettingsScreen extends StatelessWidget {
   const SettingsScreen({Key? key}) : super(key: key);
-  static const List<String> settingButtonTexts = [
-    "Set to zero",
-    "Customize",
-    "Share",
-    "Privacy policy",
-    "Term of use",
-    "Support",
-  ];
 
   @override
   Widget build(BuildContext context) {
@@ -38,29 +31,40 @@ class SettingsScreen extends StatelessWidget {
               text: "Settings",
             ),
             Expanded(
-              child: SingleChildScrollView(
-                child: Column(
-                  children: [
-                    EightHeightDivider(),
-                    Column(
-                      children: List.generate(
-                        settingButtonTexts.length,
-                        (index) => Column(
-                          children: [
-                            CustomButton(
-                              text: settingButtonTexts[index],
-                            ),
-                            if (index != settingButtonTexts.length - 1)
-                              const EightHeightDivider(),
-                          ],
+              child: Column(
+                children: [
+                  CustomButton(
+                    text: "Set to zero",
+                  ),
+                  EightHeightDivider(),
+                  CustomButton(
+                    text: "Customize",
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (_) => CustomizeScreen(),
                         ),
-                      ),
-                    ),
-                    SizedBox(
-                      height: 24.h,
-                    ),
-                  ],
-                ),
+                      );
+                    },
+                  ),
+                  EightHeightDivider(),
+                  CustomButton(
+                    text: "Share",
+                  ),
+                  EightHeightDivider(),
+                  CustomButton(
+                    text: "Privacy policy",
+                  ),
+                  EightHeightDivider(),
+                  CustomButton(
+                    text: "Term of use",
+                  ),
+                  EightHeightDivider(),
+                  CustomButton(
+                    text: "Support",
+                  ),
+                ],
               ),
             ),
           ],

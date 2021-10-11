@@ -1,0 +1,1 @@
+const KEY_FIRST_INIT = "first_init";

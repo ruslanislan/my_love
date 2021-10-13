@@ -1,7 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:my_love/screens/customize_screen.dart';
 import 'package:my_love/widgets/custom_app_bar.dart';
 import 'package:my_love/widgets/custom_button.dart';
@@ -27,16 +26,16 @@ class SettingsScreen extends StatelessWidget {
             SizedBox(
               height: 44.h,
             ),
-            CustomAppBar(
+            const CustomAppBar(
               text: "Settings",
             ),
             Expanded(
               child: Column(
                 children: [
-                  CustomButton(
+                  const CustomButton(
                     text: "Set to zero",
                   ),
-                  EightHeightDivider(),
+                  const EightHeightDivider(),
                   CustomButton(
                     text: "Customize",
                     onTap: () {
@@ -48,20 +47,20 @@ class SettingsScreen extends StatelessWidget {
                       );
                     },
                   ),
-                  EightHeightDivider(),
-                  CustomButton(
+                  const EightHeightDivider(),
+                  const CustomButton(
                     text: "Share",
                   ),
-                  EightHeightDivider(),
-                  CustomButton(
+                  const EightHeightDivider(),
+                  const CustomButton(
                     text: "Privacy policy",
                   ),
-                  EightHeightDivider(),
-                  CustomButton(
+                  const EightHeightDivider(),
+                  const CustomButton(
                     text: "Term of use",
                   ),
-                  EightHeightDivider(),
-                  CustomButton(
+                  const EightHeightDivider(),
+                  const CustomButton(
                     text: "Support",
                   ),
                 ],

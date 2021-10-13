@@ -2,13 +2,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:my_love/services/preferences_provider.dart';
+import 'package:my_love/screens/count_screen.dart';
 import 'package:my_love/widgets/header_text_5.dart';
 import 'package:my_love/widgets/next_button.dart';
 import 'package:my_love/widgets/subtitle_text.dart';
 import 'package:my_love/widgets/subtitle_text_2.dart';
-
-import '../menu_screen.dart';
 
 class OnboardingScreen5 extends StatelessWidget {
   const OnboardingScreen5({Key? key, required this.onTap}) : super(key: key);
@@ -22,16 +20,14 @@ class OnboardingScreen5 extends StatelessWidget {
           left: 28.52.w,
           top: 72.52.h,
           child: GestureDetector(
-              onTap: () {
-                //PreferencesProvider().saveFirstInit();
-                Route route = PageRouteBuilder(
-                  pageBuilder: (c, a1, a2) => const MenuScreen(),
-                  transitionsBuilder: (c, anim, a2, child) => FadeTransition(opacity: anim, child: child),
-                  transitionDuration: const Duration(milliseconds: 350),
-                );
-                Navigator.pushReplacement(context, route);
-              },
-              child: SvgPicture.asset("assets/icons/Union.svg")),
+            onTap: () {
+              Route route = MaterialPageRoute(
+                builder: (_) => const CountScreen(),
+              );
+              Navigator.pushReplacement(context, route);
+            },
+            child: SvgPicture.asset("assets/icons/Union.svg"),
+          ),
         ),
         Positioned(
           top: 172.h,

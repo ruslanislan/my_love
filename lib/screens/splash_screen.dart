@@ -2,7 +2,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:my_love/screens/menu_screen.dart';
+import 'package:intl/intl.dart';
+import 'package:my_love/models/menu.dart';
+import 'package:my_love/screens/final_count_screen.dart';
+import 'package:my_love/services/menu_service.dart';
 import 'package:my_love/services/preferences_provider.dart';
 import 'package:my_love/widgets/header_text_5.dart';
 
@@ -16,6 +19,9 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen> {
+
+  final MenuService _menuService = MenuService();
+
   @override
   void initState() {
     Future.delayed(const Duration(seconds: 1), () {
@@ -60,24 +66,26 @@ class _SplashScreenState extends State<SplashScreen> {
   void _openScreen() async {
     bool isFirst = await PreferencesProvider().isFirstInit();
 
-    if (!isFirst) {
+    if (isFirst) {
       Route route = PageRouteBuilder(
         pageBuilder: (c, a1, a2) => OnboardingScreen(),
         transitionsBuilder: (c, anim, a2, child) => FadeTransition(opacity: anim, child: child),
         transitionDuration: const Duration(milliseconds: 650),
       );
-      Route route2 = MaterialPageRoute(builder: (_) => OnboardingScreen());
       Navigator.pushReplacement(
         context,
         route,
       );
     } else {
+      Menu? menu = await _menuService.getByName("Count");
       Route route = PageRouteBuilder(
-        pageBuilder: (c, a1, a2) => MenuScreen(),
+        pageBuilder: (c, a1, a2) => FinalCountScreen(
+          asset: "assets/png/count_screen.png",
+          dateTime: DateFormat("dd.MM.yyyy").parse(menu!.date),
+        ),
         transitionsBuilder: (c, anim, a2, child) => FadeTransition(opacity: anim, child: child),
         transitionDuration: const Duration(milliseconds: 650),
       );
-      Route route2 = MaterialPageRoute(builder: (_) => MenuScreen());
       Navigator.pushReplacement(
         context,
         route,

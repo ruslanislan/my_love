@@ -1,7 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
+import 'package:my_love/blocs/menu/menu_bloc.dart';
+import 'package:my_love/models/menu.dart';
 import 'package:my_love/screens/completed_date_picker_screen.dart';
 import 'package:my_love/widgets/body_text_2.dart';
 import 'package:my_love/widgets/date_text_field_body.dart';
@@ -9,9 +12,11 @@ import 'package:my_love/widgets/header_text_6.dart';
 
 
 class DatePickerScreen extends StatefulWidget {
-  const DatePickerScreen({Key? key, required this.asset, required this.headerText}) : super(key: key);
+  const DatePickerScreen({Key? key, required this.asset, required this.headerText, required this.name, this.menu}) : super(key: key);
+  final String name;
   final String asset;
   final String headerText;
+  final Menu? menu;
   @override
   State<DatePickerScreen> createState() => _DatePickerScreenState();
 }
@@ -206,7 +211,7 @@ class _DatePickerScreenState extends State<DatePickerScreen> {
                       textEditingController7.text +
                       textEditingController8.text;
                   final DateFormat format = DateFormat("dd.MM.yyyy");
-
+                  BlocProvider.of<MenuBloc>(context).add(UpdateMenuItems(widget.name, date));
                   Navigator.pushReplacement(
                     context,
                     MaterialPageRoute(

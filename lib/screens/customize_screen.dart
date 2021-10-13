@@ -1,19 +1,23 @@
-import 'package:flutter/material.dart';
+import 'dart:typed_data';
+
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:my_love/blocs/menu/menu_bloc.dart';
+import 'package:my_love/constants/menu_items.dart';
 import 'package:my_love/widgets/custom_app_bar.dart';
 import 'package:my_love/widgets/custom_button.dart';
 import 'package:my_love/widgets/eight_height_divider.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 class CustomizeScreen extends StatelessWidget {
-  const CustomizeScreen({Key? key}) : super(key: key);
-  static const List<String> customButtonTexts = [
-    "First meet",
-    "First date",
-    "First kiss",
-    "Proposal",
-    "Marriage",
-  ];
+  CustomizeScreen({Key? key}) : super(key: key);
+
+  final ImagePicker _imagePicker = ImagePicker();
+  XFile? image;
 
   @override
   Widget build(BuildContext context) {
@@ -32,24 +36,38 @@ class CustomizeScreen extends StatelessWidget {
             SizedBox(
               height: 44.h,
             ),
-            CustomAppBar(
+            const CustomAppBar(
               text: "Customize",
             ),
             Expanded(
               child: SingleChildScrollView(
                 child: Column(
                   children: [
-                    EightHeightDivider(),
+                    const EightHeightDivider(),
                     Column(
                       children: List.generate(
-                        customButtonTexts.length,
-                            (index) => Column(
+                        menuItems.length,
+                        (index) => Column(
                           children: [
                             CustomButton(
-                              text: customButtonTexts[index],
+                              text: menuItems[index],
+                              onTap: () async {
+                                if (await Permission.photos.request().isGranted) {
+                                  try {
+                                    image = await _imagePicker.pickImage(source: ImageSource.gallery, imageQuality: 80);
+                                    if (image == null) {
+                                      return;
+                                    }
+
+                                    final Uint8List data = await image!.readAsBytes();
+                                    BlocProvider.of<MenuBloc>(context).add(LoadImage(menuItems[index], data));
+                                  } on PlatformException catch (e) {
+                                    print('Failed to pick image: $e');
+                                  }
+                                }
+                              },
                             ),
-                            if (index != customButtonTexts.length - 1)
-                              const EightHeightDivider(),
+                            if (index != menuItems.length - 1) const EightHeightDivider(),
                           ],
                         ),
                       ),

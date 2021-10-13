@@ -1,7 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:my_love/blocs/note/note_bloc.dart';
 import 'package:my_love/models/note.dart';
 import 'package:my_love/widgets/custom_app_bar.dart';
 import 'package:my_love/widgets/eight_height_divider.dart';
@@ -30,7 +32,11 @@ class _NewNoteScreenState extends State<NewNoteScreen> {
   void initState() {
     if (widget.note != null) {
       textEditingController1.text = widget.note!.name;
-      textEditingController2.text = widget.note!.title;
+      textEditingController2.text = widget.note!.date;
+      textEditingController3.text = widget.note!.content;
+      isNotEmptyText1 = true;
+      isNotEmptyText2 = true;
+      isNotEmptyText3 = true;
     }
     textEditingController1.addListener(() {
       if (textEditingController1.text.isNotEmpty) {
@@ -45,7 +51,7 @@ class _NewNoteScreenState extends State<NewNoteScreen> {
     textEditingController2.addListener(() {
       if (textEditingController2.text.isNotEmpty) {
         isNotEmptyText2 = true;
-      } else{
+      } else {
         isNotEmptyText2 = false;
       }
       if (isNotEmptyText1 && isNotEmptyText2 && isNotEmptyText3) {
@@ -55,7 +61,7 @@ class _NewNoteScreenState extends State<NewNoteScreen> {
     textEditingController3.addListener(() {
       if (textEditingController3.text.isNotEmpty) {
         isNotEmptyText3 = true;
-      } else{
+      } else {
         isNotEmptyText3 = false;
       }
       if (isNotEmptyText1 && isNotEmptyText2 && isNotEmptyText3) {
@@ -148,6 +154,29 @@ class _NewNoteScreenState extends State<NewNoteScreen> {
                 left: 152.5.w,
                 child: OkButton(
                   onTap: () {
+                    final Note note = Note(
+                      name: textEditingController1.text,
+                      content: textEditingController3.text,
+                      date: textEditingController2.text,
+                      createdAt: DateTime.now().toIso8601String(),
+                      updatedAt: DateTime.now().toIso8601String(),
+                    );
+                    if (widget.note == null) {
+                      BlocProvider.of<NoteBloc>(context).add(
+                        CreateNote(note),
+                      );
+                    } else {
+                      BlocProvider.of<NoteBloc>(context).add(
+                        UpdateNote(
+                          widget.note!.copyWith(
+                            name: textEditingController1.text,
+                            content: textEditingController3.text,
+                            date: textEditingController2.text,
+                            updatedAt: DateTime.now().toIso8601String(),
+                          ),
+                        ),
+                      );
+                    }
                     Navigator.pop(context);
                   },
                 ),
@@ -192,11 +221,9 @@ class _TextBlockState extends State<_TextBlock> {
         editing = false;
         setState(() {});
       }
-      if(focusNode.hasFocus){
+      if (focusNode.hasFocus) {
         editing = true;
-        setState(() {
-
-        });
+        setState(() {});
       }
     });
     super.initState();

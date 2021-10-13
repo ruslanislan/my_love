@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:intl/intl.dart';
 import 'package:my_love/models/note.dart';
 
 class NoteContainer extends StatelessWidget {
@@ -9,6 +10,7 @@ class NoteContainer extends StatelessWidget {
   final VoidCallback? onTap;
   @override
   Widget build(BuildContext context) {
+    final DateTime dateTime = DateFormat("dd.MM.yyyy").parse(note.date);
     return GestureDetector(
       onTap: onTap,
       child: Container(
@@ -31,7 +33,7 @@ class NoteContainer extends StatelessWidget {
               height: 4.h,
             ),
             Text(
-              note.title,
+              DateFormat("dd MMM yyyy").format(dateTime),
               style: Theme.of(context).textTheme.bodyText2,
             ),
           ],

@@ -2,6 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
+import 'package:my_love/models/menu.dart';
+import 'package:my_love/services/menu_service.dart';
 import 'package:my_love/widgets/body_text_2.dart';
 import 'package:my_love/widgets/date_text_field_body.dart';
 import 'package:my_love/widgets/header_text_6.dart';
@@ -33,6 +35,8 @@ class _CountScreenState extends State<CountScreen> {
   final TextEditingController textEditingController7 = TextEditingController(text: "0");
 
   final TextEditingController textEditingController8 = TextEditingController(text: "0");
+
+  final MenuService _menuService = MenuService();
 
   @override
   void initState() {
@@ -193,7 +197,7 @@ class _CountScreenState extends State<CountScreen> {
               top: 666.h,
               left: 152.5.w,
               child: OkButton(
-                onTap: () {
+                onTap: () async {
                   final String date = textEditingController1.text +
                       textEditingController2.text +
                       "." +
@@ -204,17 +208,23 @@ class _CountScreenState extends State<CountScreen> {
                       textEditingController6.text +
                       textEditingController7.text +
                       textEditingController8.text;
-                  final DateFormat format = DateFormat("dd.MM.yyyy");
 
-                  Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => FinalCountScreen(
-                        asset: "assets/png/count_screen.png",
-                        dateTime: format.parse(date),
+                  final Menu menu = Menu(name: "Count", date: date, createdAt: DateTime.now().toIso8601String(), updatedAt: DateTime.now().toIso8601String());
+
+                  try{
+                    await _menuService.create(menu);
+                    Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => FinalCountScreen(
+                          asset: "assets/png/count_screen.png",
+                          dateTime: DateFormat("dd.MM.yyyy").parse(date),
+                        ),
                       ),
-                    ),
-                  );
+                    );
+                  } catch(e){
+                    throw Exception(e);
+                  }
                 },
               ),
             )

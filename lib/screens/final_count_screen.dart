@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:my_love/services/preferences_provider.dart';
 import 'package:my_love/widgets/body_text_2.dart';
 import 'package:my_love/widgets/date_text_body.dart';
 
@@ -202,6 +203,7 @@ class _FinalCountScreenState extends State<FinalCountScreen> {
               left: 152.5.w,
               child: GestureDetector(
                 onTap: () {
+                  PreferencesProvider().saveFirstInit();
                   timer.cancel();
                   Navigator.pushReplacement(
                     context,

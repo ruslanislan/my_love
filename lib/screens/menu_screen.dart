@@ -11,7 +11,9 @@ import 'package:my_love/models/menu.dart';
 import 'package:my_love/screens/completed_date_picker_screen.dart';
 import 'package:my_love/screens/date_picker_screen.dart';
 import 'package:my_love/screens/note_screen.dart';
+import 'package:my_love/screens/onboarding_screens/onboarding_screen_6.dart';
 import 'package:my_love/screens/settings_screen.dart';
+import 'package:my_love/services/preferences_provider.dart';
 import 'package:my_love/widgets/custom_app_bar.dart';
 import 'package:my_love/widgets/eight_height_divider.dart';
 import 'package:my_love/widgets/menu_item.dart';
@@ -47,6 +49,15 @@ class MenuScreen extends StatelessWidget {
                 child: CircularProgressIndicator(),
               );
             }
+            if (state is MenuItemsError) {
+              return Center(
+                child: Text(
+                  state.error,
+                  style: Theme.of(context).textTheme.bodyText2,
+                  textAlign: TextAlign.center,
+                ),
+              );
+            }
             final List<Menu> list = (state as MenuItemsLoaded).menuItems;
             return Column(
               children: [
@@ -75,7 +86,7 @@ class MenuScreen extends StatelessWidget {
                                   text: menuItems[index],
                                   asset: "${_assets[index]}.png",
                                   onTap: () {
-                                    if (list.where((element) => element.name == menuItems[index]).isNotEmpty) {
+                                    if (list.where((element) => element.name == menuItems[index] && element.date.isNotEmpty).isNotEmpty) {
                                       Navigator.push(
                                         context,
                                         MaterialPageRoute(
@@ -119,13 +130,28 @@ class MenuScreen extends StatelessWidget {
                         ),
                         _MenuItem2(
                           text: "Notes",
-                          onTap: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (_) => NoteScreen(),
-                              ),
-                            );
+                          onTap: () async {
+                            final bool isPaid = await PreferencesProvider().isPaid();
+                            if (isPaid) {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (_) => const NoteScreen(),
+                                ),
+                              );
+                            } else {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (_) => OnboardingScreen6(
+                                    onTap: () {},
+                                    onCloseTap: () {
+                                      Navigator.pop(context);
+                                    },
+                                  ),
+                                ),
+                              );
+                            }
                           },
                         ),
                         SizedBox(
@@ -133,13 +159,28 @@ class MenuScreen extends StatelessWidget {
                         ),
                         _MenuItem2(
                           text: "Notifications",
-                          onTap: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (_) => const NotificationScreen(),
-                              ),
-                            );
+                          onTap: () async {
+                            final bool isPaid = await PreferencesProvider().isPaid();
+                            if (isPaid) {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (_) => const NotificationScreen(),
+                                ),
+                              );
+                            } else {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (_) => OnboardingScreen6(
+                                    onTap: () {},
+                                    onCloseTap: () {
+                                      Navigator.pop(context);
+                                    },
+                                  ),
+                                ),
+                              );
+                            }
                           },
                         ),
                         SizedBox(

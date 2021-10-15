@@ -204,6 +204,7 @@ class _FinalCountScreenState extends State<FinalCountScreen> {
               child: GestureDetector(
                 onTap: () {
                   PreferencesProvider().saveFirstInit();
+                  PreferencesProvider().savePaid();
                   timer.cancel();
                   Navigator.pushReplacement(
                     context,

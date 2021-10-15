@@ -8,12 +8,15 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:my_love/blocs/menu/menu_bloc.dart';
 import 'package:my_love/blocs/note/note_bloc.dart';
+import 'package:my_love/screens/notification_screen.dart';
 import 'package:my_love/screens/splash_screen.dart';
 import 'package:my_love/services/menu_service.dart';
 import 'package:my_love/services/note_service.dart';
+import 'package:my_love/services/notification_api.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
+  NotificationApi.init();
   SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitDown,
     DeviceOrientation.portraitUp,
@@ -26,23 +29,44 @@ void main() {
   );
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   MyApp({Key? key}) : super(key: key);
+
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
   final MenuService _menuService = MenuService();
+
   final NoteService _noteService = NoteService();
+
+  @override
+  void initState() {
+    listenNotification();
+    super.initState();
+  }
+
+  void listenNotification() {
+    NotificationApi.onNotifications.stream.listen(onClickedNotification);
+  }
+
+  void onClickedNotification(String? event) => Navigator.of(context).push(MaterialPageRoute(builder: (_) => Container(),),);
 
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
         BlocProvider(
-          create: (BuildContext context) => MenuBloc(_menuService)
+          create: (BuildContext context) =>
+          MenuBloc(_menuService)
             ..add(
               LoadMenuItems(),
             ),
         ),
         BlocProvider(
-          create: (_) => NoteBloc(_noteService)
+          create: (_) =>
+          NoteBloc(_noteService)
             ..add(
               LoadNotes(),
             ),

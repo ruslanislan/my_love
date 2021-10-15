@@ -2,7 +2,12 @@ import 'dart:ui';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:my_love/blocs/menu/menu_bloc.dart';
+import 'package:my_love/constants/menu_items.dart';
+import 'package:my_love/models/menu.dart';
+import 'package:my_love/services/menu_service.dart';
 import 'package:my_love/widgets/custom_app_bar.dart';
 import 'package:my_love/widgets/custom_button.dart';
 import 'package:my_love/widgets/eight_height_divider.dart';
@@ -15,13 +20,7 @@ class NotificationScreen extends StatefulWidget {
 }
 
 class _NotificationScreenState extends State<NotificationScreen> {
-  static const List<String> customButtonTexts = [
-    "First meet",
-    "First date",
-    "First kiss",
-    "Proposal",
-    "Marriage",
-  ];
+  final MenuService _menuService = MenuService();
   static const List<String> frequencyTexts = [
     "Month",
     "3 month",
@@ -34,6 +33,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
   final TextEditingController textEditingController = TextEditingController();
   int textLength = 0;
   bool editing = false;
+  Menu? menu;
 
   @override
   Widget build(BuildContext context) {
@@ -62,23 +62,49 @@ class _NotificationScreenState extends State<NotificationScreen> {
                     const EightHeightDivider(),
                     Column(
                       children: List.generate(
-                        customButtonTexts.length,
+                        menuItems.length,
                         (index) => Column(
                           children: [
                             CustomButton(
-                              text: customButtonTexts[index],
+                              text: menuItems[index],
                               selected: selected == index,
-                              onTap: () {
-                                if (selected == index) {
-                                  selected = -1;
-                                  setState(() {});
+                              onTap: () async {
+                                menu = await _menuService.getByName(menuItems[index]);
+                                if (menu != null) {
+                                  if (selected == index) {
+                                    selected = -1;
+                                    setState(() {});
+                                  } else {
+                                    if (menu!.frequency != null) {
+                                      frequencySelected = menu!.frequency!;
+                                    } else {
+                                      frequencySelected = frequencyTexts.length - 1;
+                                    }
+                                    if (menu!.time != null) {
+                                      textEditingController.text = menu!.time!;
+                                      editing = true;
+                                    } else {
+                                      textEditingController.text = "";
+                                      editing = false;
+                                    }
+                                    if (menu!.active != null) {
+                                      enabled = (menu!.active! == 1);
+                                    } else {
+                                      enabled = false;
+                                    }
+                                    selected = index;
+                                    setState(() {});
+                                  }
                                 } else {
-                                  selected = index;
-                                  setState(() {});
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    const SnackBar(
+                                      content: Text("before installing the notification, set the date!"),
+                                    ),
+                                  );
                                 }
                               },
                             ),
-                            if (index != customButtonTexts.length - 1) const EightHeightDivider(),
+                            if (index != menuItems.length - 1) const EightHeightDivider(),
                           ],
                         ),
                       ),
@@ -107,6 +133,14 @@ class _NotificationScreenState extends State<NotificationScreen> {
                                   child: GestureDetector(
                                     onTap: () {
                                       enabled = !enabled;
+                                      context.read<MenuBloc>().add(
+                                            SaveNotification(
+                                              menu: menu!.copyWith(
+                                                active: enabled == true ? 1 : 0,
+                                                frequency: frequencySelected,
+                                              ),
+                                            ),
+                                          );
                                       setState(() {});
                                     },
                                     child: Container(
@@ -226,6 +260,11 @@ class _NotificationScreenState extends State<NotificationScreen> {
                                         editing = false;
                                       }
                                       FocusScope.of(context).unfocus();
+                                      context.read<MenuBloc>().add(
+                                            SaveNotification(
+                                              menu: menu!.copyWith(active: enabled == true ? 1 : 0, frequency: frequencySelected, time: textEditingController.text),
+                                            ),
+                                          );
                                     },
                                     onChanged: (value) {
                                       if (value.length >= 5) {

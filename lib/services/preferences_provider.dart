@@ -27,4 +27,14 @@ class PreferencesProvider {
     await _initPreferences();
     return _preferences!.getBool(KEY_FIRST_INIT) ?? true;
   }
+
+  Future<bool> isPaid() async {
+    await _initPreferences();
+    return _preferences!.getBool(KEY_IS_PAID) ?? false;
+  }
+
+  Future<bool> savePaid() async {
+    await _initPreferences();
+    return _preferences!.setBool(KEY_IS_PAID, true);
+  }
 }

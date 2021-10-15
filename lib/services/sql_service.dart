@@ -49,6 +49,9 @@ class SqlService {
       ${MenuFields.name} $textType,
       ${MenuFields.date} $textType,
       ${MenuFields.image} $textType,
+      ${MenuFields.frequency} $intType,
+      ${MenuFields.time} $textType,
+      ${MenuFields.active} $boolType,
       ${MenuFields.createdAt} $textType,
       ${MenuFields.updatedAt} $textType
     );

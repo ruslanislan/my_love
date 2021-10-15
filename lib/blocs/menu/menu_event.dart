@@ -20,3 +20,11 @@ class LoadImage extends MenuEvent {
 
   LoadImage(this.name, this.imageData);
 }
+
+class SaveNotification extends MenuEvent {
+  final Menu menu;
+
+  SaveNotification({
+    required this.menu,
+  });
+}

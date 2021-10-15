@@ -3,8 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class NextButton extends StatelessWidget {
-  const NextButton({Key? key, required this.onTap}) : super(key: key);
+  const NextButton({Key? key, required this.onTap, this.text = "continue"}) : super(key: key);
   final VoidCallback onTap;
+  final String text;
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -26,7 +27,7 @@ class NextButton extends StatelessWidget {
               ).createShader(bounds);
             },
             child: Text(
-              "continue".toUpperCase(),
+              text.toUpperCase(),
               style: TextStyle(
                 fontSize: 28.sp,
                 color: Colors.white,

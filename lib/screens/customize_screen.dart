@@ -8,6 +8,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:my_love/blocs/menu/menu_bloc.dart';
 import 'package:my_love/constants/menu_items.dart';
+import 'package:my_love/models/menu.dart';
+import 'package:my_love/services/menu_service.dart';
 import 'package:my_love/widgets/custom_app_bar.dart';
 import 'package:my_love/widgets/custom_button.dart';
 import 'package:my_love/widgets/eight_height_divider.dart';
@@ -17,6 +19,7 @@ class CustomizeScreen extends StatelessWidget {
   CustomizeScreen({Key? key}) : super(key: key);
 
   final ImagePicker _imagePicker = ImagePicker();
+  final MenuService _menuService = MenuService();
   XFile? image;
 
   @override
@@ -52,7 +55,8 @@ class CustomizeScreen extends StatelessWidget {
                             CustomButton(
                               text: menuItems[index],
                               onTap: () async {
-                                if (await Permission.photos.request().isGranted) {
+                                final Menu? menu = await _menuService.getByName(menuItems[index]);
+                                if (menu != null && await Permission.photos.request().isGranted) {
                                   try {
                                     image = await _imagePicker.pickImage(source: ImageSource.gallery, imageQuality: 80);
                                     if (image == null) {
@@ -60,10 +64,17 @@ class CustomizeScreen extends StatelessWidget {
                                     }
 
                                     final Uint8List data = await image!.readAsBytes();
+
                                     BlocProvider.of<MenuBloc>(context).add(LoadImage(menuItems[index], data));
                                   } on PlatformException catch (e) {
                                     print('Failed to pick image: $e');
                                   }
+                                } else {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    const SnackBar(
+                                      content: Text("before installing the image, set the date!"),
+                                    ),
+                                  );
                                 }
                               },
                             ),

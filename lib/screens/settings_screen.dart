@@ -1,10 +1,15 @@
+import 'dart:io';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:my_love/screens/customize_screen.dart';
+import 'package:my_love/screens/onboarding_screens/onboarding_screen_6.dart';
+import 'package:my_love/services/preferences_provider.dart';
 import 'package:my_love/widgets/custom_app_bar.dart';
 import 'package:my_love/widgets/custom_button.dart';
 import 'package:my_love/widgets/eight_height_divider.dart';
+import 'package:share/share.dart';
 
 class SettingsScreen extends StatelessWidget {
   const SettingsScreen({Key? key}) : super(key: key);
@@ -38,18 +43,37 @@ class SettingsScreen extends StatelessWidget {
                   const EightHeightDivider(),
                   CustomButton(
                     text: "Customize",
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (_) => CustomizeScreen(),
-                        ),
-                      );
+                    onTap: () async {
+                      final bool isPaid = await PreferencesProvider().isPaid();
+                      if (isPaid) {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (_) => CustomizeScreen(),
+                          ),
+                        );
+                      } else {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (_) => OnboardingScreen6(
+                              onTap: () {},
+                              onCloseTap: () {
+                                Navigator.pop(context);
+                              },
+                            ),
+                          ),
+                        );
+                      }
                     },
                   ),
                   const EightHeightDivider(),
-                  const CustomButton(
+                  CustomButton(
                     text: "Share",
+                    onTap: () {
+                      print('SettingsScreen.build');
+                      shareApp( context);
+                    },
                   ),
                   const EightHeightDivider(),
                   const CustomButton(
@@ -70,5 +94,12 @@ class SettingsScreen extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  void shareApp( BuildContext context) async {
+    String appLink = 'My Love Relationship Count';
+    final RenderBox box = context.findRenderObject() as RenderBox;
+
+    await Share.share(appLink, sharePositionOrigin: box.localToGlobal(Offset.zero) & box.size);
   }
 }

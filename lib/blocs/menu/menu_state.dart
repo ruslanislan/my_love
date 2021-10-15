@@ -18,4 +18,9 @@ class MenuItemsLoaded extends MenuState{
   List<Object?> get props => [menuItems];
 }
 
+class MenuItemsError extends MenuState{
+  final String error;
+
+  MenuItemsError(this.error);
+}
 

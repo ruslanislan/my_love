@@ -24,7 +24,6 @@ abstract class LocalService<T> {
     final db = await sqlService.database;
     final maps = await db.query(tableName, columns: fieldList, where: '$fieldName = ?', whereArgs: [name]);
     if(maps.isNotEmpty){
-      print('get by name item founds');
       return deserialize(maps.first);
     }
     return null;
@@ -34,7 +33,6 @@ abstract class LocalService<T> {
     final Database db = await sqlService.database;
     final result = await db.query(tableName, orderBy: orderBy);
     if(result.isNotEmpty) {
-      print('get all empty');
       return deserializeList(result);
     }
     return [];

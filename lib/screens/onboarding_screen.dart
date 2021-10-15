@@ -1,6 +1,9 @@
+import 'dart:io';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
+import 'package:rate_my_app/rate_my_app.dart';
 
 import 'count_screen.dart';
 import 'onboarding_screens/onboarding_screen_2.dart';
@@ -13,6 +16,16 @@ class OnboardingScreen extends StatelessWidget {
   OnboardingScreen({Key? key}) : super(key: key);
 
   PageController pageController = PageController(initialPage: 0);
+
+  RateMyApp rateMyApp = RateMyApp(
+    preferencesPrefix: 'rateMyApp_',
+    minDays: 7,
+    minLaunches: 10,
+    remindDays: 7,
+    remindLaunches: 10,
+    googlePlayIdentifier: 'fr.skyost.example',
+    appStoreIdentifier: '1491556149',
+  );
 
   @override
   Widget build(BuildContext context) {
@@ -39,7 +52,32 @@ class OnboardingScreen extends StatelessWidget {
               },
             ),
             OnboardingScreen3(
-              onTap: () {
+              onTap: () async {
+                await rateMyApp.init();
+                await rateMyApp.showStarRateDialog(
+                  context,
+                  title: 'Rate this app',
+                  message: 'You like this app ? Then take a little bit of your time to leave a rating :',
+                  actionsBuilder: (context, stars) {
+                    return [
+                      ElevatedButton(
+                        child: const Text('OK'),
+                        onPressed: () async {
+                          await rateMyApp.callEvent(RateMyAppEventType.rateButtonPressed);
+                          Navigator.pop<RateMyAppDialogButton>(context, RateMyAppDialogButton.rate);
+                        },
+                      ),
+                    ];
+                  },
+                  ignoreNativeDialog: Platform.isAndroid,
+                  dialogStyle: const DialogStyle(
+                    titleAlign: TextAlign.center,
+                    messageAlign: TextAlign.center,
+                    messagePadding: EdgeInsets.only(bottom: 20),
+                  ),
+                  starRatingOptions: const StarRatingOptions(),
+                  onDismissed: () => rateMyApp.callEvent(RateMyAppEventType.laterButtonPressed),
+                );
                 pageController.animateToPage(
                   2,
                   duration: const Duration(milliseconds: 350),

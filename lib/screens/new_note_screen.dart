@@ -122,7 +122,7 @@ class _NewNoteScreenState extends State<NewNoteScreen> {
                               ),
                               _TextBlock(
                                 textEditingController: textEditingController2,
-                                style: Theme.of(context).textTheme.headline6,
+                                style: Theme.of(context).textTheme.headline6!.copyWith(color: Colors.white),
                                 textInputType: TextInputType.number,
                                 labelText: 'Add a date...',
                                 name: 'Date',
@@ -134,7 +134,7 @@ class _NewNoteScreenState extends State<NewNoteScreen> {
                               _TextBlock(
                                 height: 124.h,
                                 textEditingController: textEditingController3,
-                                style: Theme.of(context).textTheme.headline6,
+                                style: Theme.of(context).textTheme.headline6!.copyWith(color: Colors.white),
                                 labelText: 'Add a note...',
                                 name: 'Note',
                                 last: true,

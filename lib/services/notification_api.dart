@@ -25,7 +25,7 @@ class NotificationApi {
 
   static Future init({bool initSchedule = false}) async {
     tz.initializeTimeZones();
-    const android = AndroidInitializationSettings('assets/png/logo.png');
+    const android = AndroidInitializationSettings('@mipmap/ic_launcher');
     const iOS = IOSInitializationSettings(
       requestAlertPermission: true,
       requestBadgePermission: true,

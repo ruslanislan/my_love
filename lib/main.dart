@@ -94,13 +94,13 @@ class _MyAppState extends State<MyApp> {
                 fontWeight: FontWeight.w700,
               ),
               headline6: TextStyle(
-                color: Colors.white,
+                //color: Colors.white,
                 fontSize: 19.sp,
                 fontWeight: FontWeight.w300,
                 height: 1,
               ),
               subtitle1: TextStyle(
-                color: Colors.white,
+                //color: Colors.white,
                 fontSize: 18.sp,
                 fontWeight: FontWeight.w400,
               ),

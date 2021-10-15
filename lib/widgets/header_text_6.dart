@@ -13,7 +13,7 @@ class HeaderText6 extends StatelessWidget {
       height: height ?? 40.h,
       child: Text(
         text,
-        style: Theme.of(context).textTheme.headline6,
+        style: Theme.of(context).textTheme.headline6!.copyWith(color: Colors.white),
         textAlign: TextAlign.center,
       ),
     );

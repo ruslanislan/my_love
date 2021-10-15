@@ -12,7 +12,7 @@ class SubtitleText extends StatelessWidget {
       height: 48.h,
       child: Text(
         text,
-        style: Theme.of(context).textTheme.subtitle1,
+        style: Theme.of(context).textTheme.subtitle1!.copyWith(color: Colors.white),
         textAlign: TextAlign.center,
       ),
     );
